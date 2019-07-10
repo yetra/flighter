@@ -32,5 +32,16 @@ module OpenWeatherMap
         temp_k: city_hash['main']['temp']
       )
     end
+
+    def nearby(count = 5)
+      url = 'http://api.openweathermap.org/data/2.5/find'
+      response = Faraday.get(
+        url, lat: lat, lon: lon, cnt: count,
+             appid: Rails.application.credentials.open_weather_map_api_key
+      )
+
+      city_hashes = JSON.parse(response.body)['list']
+      city_hashes.map { |city_hash| self.class.parse(city_hash) }
+    end
   end
 end
