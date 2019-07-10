@@ -11,4 +11,8 @@ module OpenWeatherMap
 
     OpenWeatherMap::City.parse(JSON.parse(response.body))
   end
+
+  def self.cities(city_names)
+    city_names.map(&method(:city))
+  end
 end
