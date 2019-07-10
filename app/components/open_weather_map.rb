@@ -13,6 +13,6 @@ module OpenWeatherMap
   end
 
   def self.cities(city_names)
-    city_names.map(&method(:city))
+    city_names.map(&method(:city)).compact
   end
 end
