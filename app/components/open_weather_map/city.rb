@@ -16,11 +16,9 @@ module OpenWeatherMap
     end
 
     def <=>(other)
-      compare_temp = temp <=> other.temp
+      return nil unless other.is_a?(self.class)
 
-      return name <=> other.name if compare_temp.zero?
-
-      compare_temp
+      [temp, name] <=> [other.temp, other.name]
     end
 
     def self.parse(city_hash)
