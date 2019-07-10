@@ -43,5 +43,9 @@ module OpenWeatherMap
       city_hashes = JSON.parse(response.body)['list']
       city_hashes.map { |city_hash| self.class.parse(city_hash) }
     end
+
+    def coldest_nearby(count = 5)
+      nearby(count).min
+    end
   end
 end
