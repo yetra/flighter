@@ -9,5 +9,9 @@ module OpenWeatherMap
       @name = name
       @temp_k = temp_k
     end
+
+    def temp
+      @temp_k - 273.15
+    end
   end
 end
