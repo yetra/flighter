@@ -7,11 +7,7 @@ module OpenWeatherMap
       city_ids_file = File.read(city_ids_path)
       city_ids = JSON.parse(city_ids_file)
 
-      city_ids.each do |city|
-        return city['id'] if city['name'] == city_name
-      end
-
-      nil
+      city_ids.find { |city| city['name'] == city_name }.try(:fetch, 'id')
     end
   end
 end
