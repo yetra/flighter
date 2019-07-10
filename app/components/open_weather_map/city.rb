@@ -22,5 +22,15 @@ module OpenWeatherMap
 
       compare_temp
     end
+
+    def self.parse(city_hash)
+      new(
+        id: city_hash['id'],
+        lat: city_hash['coord']['lat'],
+        lon: city_hash['coord']['lon'],
+        name: city_hash['name'],
+        temp_k: city_hash['main']['temp']
+      )
+    end
   end
 end
