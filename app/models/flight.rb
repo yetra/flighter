@@ -16,4 +16,18 @@
 class Flight < ApplicationRecord
   belongs_to :company
   has_many :bookings, dependent: :destroy
+
+  validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :company_id }
+
+  validates :flys_at, presence: true
+  validates :lands_at, presence: true
+  validate :flys_before_lands
+
+  validates :base_price, presence: true, numericality: { greater_than: 0 }
+
+  def flys_before_lands
+    return if flys_at < lands_at
+
+    errors.add(:flys_at, 'must be before lands_at')
+  end
 end
