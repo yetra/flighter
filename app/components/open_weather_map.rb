@@ -17,6 +17,11 @@ module OpenWeatherMap
   end
 
   def self.cities(city_names)
-    city_names.map(&method(:city)).compact
+    city_ids = city_names.map { |city_name| OpenWeatherMap::Resolver.city_id(city_name) }.compact
+
+    response = fetch('group', id: city_ids.join(','))
+
+    city_hashes = JSON.parse(response.body)['list']
+    city_hashes.map { |city_hash| OpenWeatherMap::City.parse(city_hash) }
   end
 end
