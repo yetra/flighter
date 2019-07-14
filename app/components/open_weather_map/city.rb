@@ -1,7 +1,7 @@
 module OpenWeatherMap
   class City
     include Comparable
-    attr_reader :id, :lat, :lon, :name
+    attr_reader :id, :lat, :lon, :name, :temp_k
 
     def initialize(id:, lat:, lon:, name:, temp_k:)
       @id = id
@@ -12,13 +12,13 @@ module OpenWeatherMap
     end
 
     def temp
-      @temp_k - 273.15
+      temp_k - 273.15
     end
 
     def <=>(other)
       return nil unless other.is_a?(self.class)
 
-      [temp, name] <=> [other.temp, other.name]
+      [temp_k, name] <=> [other.temp_k, other.name]
     end
 
     def self.parse(city_hash)
