@@ -21,5 +21,8 @@ RSpec.describe Flight do
 
     it { is_expected.to validate_presence_of(:base_price) }
     it { is_expected.to validate_numericality_of(:base_price).is_greater_than(0) }
+
+    it { is_expected.to validate_presence_of(:no_of_seats) }
+    it { is_expected.to validate_numericality_of(:no_of_seats).is_greater_than(0) }
   end
 end
