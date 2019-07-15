@@ -1,4 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
+  type 'user'
+
   has_many :bookings
 
   attribute :id

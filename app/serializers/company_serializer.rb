@@ -1,4 +1,6 @@
 class CompanySerializer < ActiveModel::Serializer
+  type 'company'
+
   has_many :flights
 
   attribute :id
