@@ -1,4 +1,4 @@
-class FlightSerializer < ActiveModel::Serializer
+class BookingSerializer < ActiveModel::Serializer
   type 'booking'
 
   belongs_to :user
