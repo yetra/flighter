@@ -23,6 +23,6 @@ class Booking < ApplicationRecord
   def flight_not_in_the_past
     return unless flight&.flys_at&.past?
 
-    errors.add(:flight_id, 'flight can\'t be in the past')
+    errors.add(:flight, "flight can't be in the past")
   end
 end
