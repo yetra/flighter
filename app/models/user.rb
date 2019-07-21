@@ -9,10 +9,12 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  password_digest :string
+#  token           :string
 #
 
 class User < ApplicationRecord
   has_secure_password
+  has_secure_token
 
   has_many :bookings, dependent: :destroy
 
