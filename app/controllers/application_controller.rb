@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_permission
-    permitted || render_forbidden
+    permitted? || render_forbidden
   end
 
   def current_user
@@ -31,15 +31,15 @@ class ApplicationController < ActionController::Base
     head :forbidden
   end
 
+  def permitted?
+    current_user.admin?
+  end
+
   private
 
   def authenticate_token
     token = request.headers['Authorization']
 
     User.find_by(token: token)
-  end
-
-  def permitted
-    params[:id] == current_user.id || current_user.admin?
   end
 end
