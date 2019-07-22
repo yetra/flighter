@@ -7,6 +7,8 @@ class UserSerializer < ActiveModel::Serializer
 
   attribute :email
 
+  attribute :role
+
   attribute :created_at
   attribute :updated_at
 end
