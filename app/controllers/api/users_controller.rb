@@ -36,6 +36,8 @@ module Api
 
     # PUT /api/users/:id(.:format)
     def update
+      render :forbidden if params.key?(:role) && !current_user.admin?
+
       user = User.update(params[:id], user_params)
 
       if user.valid?
