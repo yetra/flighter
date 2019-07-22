@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
     authenticate_token || render_unauthenticated
   end
 
+  def require_permission
+    permitted || render_forbidden
+  end
+
   def current_user
     @current_user ||= authenticate_token
   end
@@ -23,11 +27,19 @@ class ApplicationController < ActionController::Base
     render json: errors, status: :unauthorized
   end
 
+  def render_forbidden
+    head :forbidden
+  end
+
   private
 
   def authenticate_token
     token = request.headers['Authorization']
 
     User.find_by(token: token)
+  end
+
+  def permitted
+    params[:id] == current_user.id || current_user.admin?
   end
 end
