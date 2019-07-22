@@ -23,4 +23,6 @@ class User < ApplicationRecord
                     format: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
 
   validates :first_name, presence: true, length: { minimum: 2 }
+
+  validates :role, inclusion: %w[admin], allow_nil: true
 end
