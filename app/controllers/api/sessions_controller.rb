@@ -6,7 +6,7 @@ module Api
       user = User.find_by(email: session_params[:email])
 
       if user&.authenticate(session_params[:password])
-        session = Session.new(user)
+        session = Session.new(user: user, token: user.token)
 
         render json: session, status: :created
       else
