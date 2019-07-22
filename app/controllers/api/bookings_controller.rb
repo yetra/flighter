@@ -4,7 +4,7 @@ module Api
 
     # GET /api/bookings(.:format)
     def index
-      render json: Booking.all, status: :ok
+      render json: Booking.where(user_id == current_user.id), status: :ok
     end
 
     # POST /api/bookings(.:format)
@@ -21,6 +21,8 @@ module Api
     # GET /api/bookings/:id(.:format)
     def show
       booking = Booking.find(params[:id])
+
+      head :forbidden if booking.user != current_user
 
       if booking
         render json: booking, status: :ok
