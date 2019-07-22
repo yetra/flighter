@@ -4,7 +4,11 @@ module Api
 
     # GET /api/bookings(.:format)
     def index
-      render json: Booking.where(user_id == current_user.id), status: :ok
+      if current_user.admin?
+        render json: Booking.all, status: :ok
+      else
+        render json: Booking.where(user: current_user), status: :ok
+      end
     end
 
     # POST /api/bookings(.:format)
