@@ -1,6 +1,7 @@
 module Api
   class BookingsController < ApplicationController
     before_action :require_login
+    before_action :require_permission, only: [:show, :update, :destroy]
 
     # GET /api/bookings(.:format)
     def index
@@ -39,9 +40,12 @@ module Api
 
     # PUT /api/bookings/:id(.:format)
     def update
-      booking = Booking.update(params[:id], booking_params)
+      booking = Booking.find(params[:id])
+      booking.attributes = booking_params
 
-      if booking.valid?
+      if booking.user_id_changed? && !current_user.admin?
+        render_forbidden
+      elsif booking.save
         render json: booking, status: :ok
       else
         render json: { errors: booking.errors }, status: :bad_request
