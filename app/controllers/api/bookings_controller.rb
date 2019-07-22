@@ -1,5 +1,7 @@
 module Api
   class BookingsController < ApplicationController
+    before_action :require_login
+
     # GET /api/bookings(.:format)
     def index
       render json: Booking.all, status: :ok

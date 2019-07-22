@@ -1,5 +1,7 @@
 module Api
   class UsersController < ApplicationController
+    before_action :require_login, except: [:create]
+
     # GET /api/users(.:format)
     def index
       render json: User.all, status: :ok
