@@ -4,7 +4,11 @@ module Api
 
     # GET /api/users(.:format)
     def index
-      render json: User.all, status: :ok
+      if current_user.admin?
+        render json: User.all, status: :ok
+      else
+        head :forbidden
+      end
     end
 
     # POST /api/users(.:format)
