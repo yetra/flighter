@@ -8,7 +8,7 @@ module Api
       if current_user.admin?
         render json: User.all, status: :ok
       else
-        head :forbidden
+        render_forbidden
       end
     end
 
@@ -36,11 +36,12 @@ module Api
 
     # PUT /api/users/:id(.:format)
     def update
-      render :forbidden if params.key?(:role) && !current_user.admin?
+      user = User.find(params[:id])
+      user.attributes = user_params
 
-      user = User.update(params[:id], user_params)
-
-      if user.valid?
+      if user.role_changed? && !current_user.admin?
+        render_forbidden
+      elsif user.save
         render json: user, status: :ok
       else
         render json: { errors: user.errors }, status: :bad_request
