@@ -1,6 +1,7 @@
 module Api
   class UsersController < ApplicationController
     before_action :require_login, except: [:create]
+    before_action :require_permission, only: [:show, :update, :destroy]
 
     # GET /api/users(.:format)
     def index
