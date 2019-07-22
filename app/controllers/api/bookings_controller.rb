@@ -11,6 +11,8 @@ module Api
     def create
       booking = Booking.new(booking_params)
 
+      head :forbidden if booking.user != current_user
+
       if booking.save
         render json: booking, status: :created
       else
