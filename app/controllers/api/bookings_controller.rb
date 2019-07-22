@@ -70,5 +70,9 @@ module Api
         :user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at
       )
     end
+
+    def permitted?
+      params[:user_id] == current_user.id || super
+    end
   end
 end

@@ -66,5 +66,9 @@ module Api
         :first_name, :last_name, :email, :password, :created_at, :updated_at
       )
     end
+
+    def permitted?
+      params[:id] == current_user.id || super
+    end
   end
 end
