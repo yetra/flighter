@@ -1,5 +1,8 @@
 module Api
   class CompaniesController < ApplicationController
+    before_action :require_login, only: [:create, :update, :destroy]
+    before_action :require_permission, only: [:create, :update, :destroy]
+
     # GET /api/companies(.:format)
     def index
       render json: Company.all, status: :ok

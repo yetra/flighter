@@ -1,5 +1,8 @@
 module Api
   class FlightsController < ApplicationController
+    before_action :require_login, only: [:create, :update, :destroy]
+    before_action :require_permission, only: [:create, :update, :destroy]
+
     # GET /api/flights(.:format)
     def index
       render json: Flight.all, status: :ok
