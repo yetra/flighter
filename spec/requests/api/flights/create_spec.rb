@@ -5,7 +5,7 @@ RSpec.describe 'Flights API create', type: :request do
   let!(:admin_user) { FactoryBot.create(:user, admin: true) }
 
   let!(:company) { FactoryBot.create(:company) }
-  let(:valid_params) { FactoryBot.attributes_for(:flight, name: 'Valid', company_id: company.id) }
+  let(:valid_params) { FactoryBot.attributes_for(:flight, company_id: company.id) }
 
   describe 'POST /api/flights(.:format)' do
     context 'when unauthenticated' do
@@ -41,9 +41,9 @@ RSpec.describe 'Flights API create', type: :request do
         end.to change(Flight, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        expect(json_body['flight']).to include('name' => 'Valid',
-                                               'no_of_seats' => 50,
-                                               'base_price' => 400)
+        expect(json_body['flight']).to include('name' => valid_params[:name],
+                                               'no_of_seats' => valid_params[:no_of_seats],
+                                               'base_price' => valid_params[:base_price])
       end
     end
   end
