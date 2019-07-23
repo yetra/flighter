@@ -28,7 +28,9 @@ class ApplicationController < ActionController::Base
   end
 
   def render_forbidden
-    head :forbidden
+    errors = { errors: { resource: ['is forbidden'] } }
+
+    render json: errors, status: :forbidden
   end
 
   def permitted?
