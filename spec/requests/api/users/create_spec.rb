@@ -1,29 +1,31 @@
 RSpec.describe 'Users API create', type: :request do
   include TestHelpers::JsonResponse
-  include TestHelpers::JsonParams
+
+  let(:valid_parms) { FactoryBot.attributes_for(:user) }
+  let(:invalid_params) { FactoryBot.attributes_for(:user, first_name: '', email: '', password: '') }
 
   describe 'POST /api/users(.:format)' do
     context 'when params are valid' do
       it 'creates a user' do
         expect do
           post '/api/users',
-               params: user_params.to_json,
+               params: { user: valid_parms }.to_json,
                headers: api_headers
         end.to change(User, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        expect(json_body['user']).to include('first_name' => user_params[:user][:first_name],
-                                             'last_name' => user_params[:user][:last_name],
-                                             'email' => user_params[:user][:email])
+        expect(json_body['user']).to include('first_name' => valid_parms[:first_name],
+                                             'last_name' => valid_parms[:last_name],
+                                             'email' => valid_parms[:email])
       end
 
       it 'registers created user with provided password' do
         post '/api/users',
-             params: user_params(email: 'a2@b.com').to_json,
+             params: { user: valid_parms }.to_json,
              headers: api_headers
 
         user = User.find(json_body['user']['id'])
-        expect(user.authenticate(user_params[:user][:password])).to eq(user)
+        expect(user.authenticate(valid_parms[:password])).to eq(user)
       end
     end
 
@@ -31,7 +33,7 @@ RSpec.describe 'Users API create', type: :request do
       it 'returns 400 Bad Request' do
         expect do
           post '/api/users',
-               params: user_params(first_name: '', email: '', password: '').to_json,
+               params: { user: invalid_params }.to_json,
                headers: api_headers
         end.not_to change(User, :count)
 

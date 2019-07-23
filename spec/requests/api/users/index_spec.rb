@@ -1,6 +1,5 @@
 RSpec.describe 'Users API index', type: :request do
   include TestHelpers::JsonResponse
-  include TestHelpers::JsonParams
 
   before { FactoryBot.create_list(:user, 3) }
 

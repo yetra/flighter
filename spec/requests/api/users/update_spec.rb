@@ -1,6 +1,5 @@
 RSpec.describe 'Users API update', type: :request do
   include TestHelpers::JsonResponse
-  include TestHelpers::JsonParams
 
   let(:user) { FactoryBot.create(:user) }
 
