@@ -6,6 +6,7 @@ RSpec.describe 'Flights API create', type: :request do
 
   let!(:company) { FactoryBot.create(:company) }
   let(:valid_params) { FactoryBot.attributes_for(:flight, company_id: company.id) }
+  let(:invalid_params) { { name: 'Flight' } }
 
   describe 'POST /api/flights(.:format)' do
     context 'when unauthenticated' do
@@ -32,7 +33,7 @@ RSpec.describe 'Flights API create', type: :request do
       end
     end
 
-    context 'when authorized' do
+    context 'when authorized with valid params' do
       it 'allows admins to create a flight' do
         expect do
           post '/api/flights',
@@ -44,6 +45,19 @@ RSpec.describe 'Flights API create', type: :request do
         expect(json_body['flight']).to include('name' => valid_params[:name],
                                                'no_of_seats' => valid_params[:no_of_seats],
                                                'base_price' => valid_params[:base_price])
+      end
+    end
+
+    context 'when authorized with invalid params' do
+      it 'returns 400 Bad Request' do
+        expect do
+          post '/api/flights',
+               params: { flight: invalid_params }.to_json,
+               headers: api_headers(token: admin_user.token)
+        end.not_to change(Flight, :count)
+
+        expect(response).to have_http_status(:bad_request)
+        expect(json_body['errors']).to include('base_price', 'no_of_seats', 'flys_at', 'lands_at')
       end
     end
   end
