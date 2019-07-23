@@ -39,7 +39,6 @@ RSpec.describe 'Users API show', type: :request do
       end
 
       it 'allows non-admins to see their resources' do
-        puts public_user.attributes
         get "/api/users/#{public_user.id}",
             headers: api_headers(token: public_user.token)
 
