@@ -4,10 +4,11 @@ module TestHelpers
       JSON.parse(response.body)
     end
 
-    def api_headers
+    def api_headers(token: nil)
       {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': (token unless token.nil?)
       }
     end
   end
