@@ -24,6 +24,7 @@ RSpec.describe 'Companies API update', type: :request do
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:forbidden)
+        expect(json_body['errors']).to include('resource')
       end
     end
 

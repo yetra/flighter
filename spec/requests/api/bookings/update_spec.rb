@@ -25,6 +25,7 @@ RSpec.describe 'Bookings API update', type: :request do
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:forbidden)
+        expect(json_body['errors']).to include('resource')
       end
 
       it 'forbids non-admins to update user_id attribute' do
@@ -33,6 +34,7 @@ RSpec.describe 'Bookings API update', type: :request do
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:forbidden)
+        expect(json_body['errors']).to include('resource')
       end
     end
 

@@ -29,6 +29,7 @@ RSpec.describe 'Companies API create', type: :request do
         end.not_to change(Company, :count)
 
         expect(response).to have_http_status(:forbidden)
+        expect(json_body['errors']).to include('resource')
       end
     end
 
