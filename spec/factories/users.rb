@@ -3,6 +3,8 @@ FactoryBot.define do
     first_name { 'Any' }
     last_name { 'Person' }
 
+    password { 'pass' }
+
     sequence(:email) { |n| "user-#{n}@email.com" }
 
     factory :user_with_bookings do
