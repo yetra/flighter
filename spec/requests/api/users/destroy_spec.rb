@@ -15,6 +15,7 @@ RSpec.describe 'Users API destroy', type: :request do
         end.not_to change(User, :count)
 
         expect(response).to have_http_status(:unauthorized)
+        expect(json_body['errors']).to include('token')
       end
     end
 

@@ -15,6 +15,7 @@ RSpec.describe 'Companies API destroy', type: :request do
         end.not_to change(Company, :count)
 
         expect(response).to have_http_status(:unauthorized)
+        expect(json_body['errors']).to include('token')
       end
     end
 

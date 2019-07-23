@@ -14,6 +14,7 @@ RSpec.describe 'Bookings API show', type: :request do
             headers: api_headers
 
         expect(response).to have_http_status(:unauthorized)
+        expect(json_body['errors']).to include('token')
       end
     end
 
