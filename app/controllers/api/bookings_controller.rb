@@ -72,7 +72,7 @@ module Api
     end
 
     def permitted?
-      params[:user_id] == current_user.id || super
+      params[:user_id].to_i == current_user.id || super
     end
   end
 end
