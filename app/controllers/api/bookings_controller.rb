@@ -16,8 +16,6 @@ module Api
     def create
       booking = Booking.new(booking_params)
 
-      head :forbidden if booking.user != current_user
-
       if booking.save
         render json: booking, status: :created
       else
@@ -28,8 +26,6 @@ module Api
     # GET /api/bookings/:id(.:format)
     def show
       booking = Booking.find(params[:id])
-
-      head :forbidden if booking.user != current_user
 
       if booking
         render json: booking, status: :ok
@@ -72,7 +68,7 @@ module Api
     end
 
     def permitted?
-      params[:user_id].to_i == current_user.id || super
+      Booking.find(params[:id]).user_id == current_user.id || super
     end
   end
 end
