@@ -37,11 +37,8 @@ module Api
     # PUT /api/bookings/:id(.:format)
     def update
       booking = Booking.find(params[:id])
-      booking.attributes = booking_params
 
-      if booking.user_id_changed? && !current_user.admin?
-        render_forbidden
-      elsif booking.save
+      if booking.save
         render json: booking, status: :ok
       else
         render json: { errors: booking.errors }, status: :bad_request
