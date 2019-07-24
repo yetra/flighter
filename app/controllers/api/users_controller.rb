@@ -14,7 +14,7 @@ module Api
 
     # POST /api/users(.:format)
     def create
-      user = User.new(user_params)
+      user = User.new(user_params.except('role'))
 
       if user.save
         render json: user, status: :created
