@@ -29,13 +29,13 @@ RSpec.describe 'Bookings API update', type: :request do
         expect(json_body['errors']).to include('resource')
       end
 
-      it 'forbids non-admins to update user_id attribute' do
+      it 'ignores non-admin updates of user_id attribute' do
         put "/api/bookings/#{public_user_booking.id}",
             params: { booking: { user_id: admin_user.id } }.to_json,
             headers: api_headers(token: public_user.token)
 
-        expect(response).to have_http_status(:forbidden)
-        expect(json_body['errors']).to include('resource')
+        expect(response).to have_http_status(:ok)
+        expect(json_body['booking']['user']['id']).not_to eq(admin_user.id)
       end
     end
 
