@@ -28,13 +28,13 @@ RSpec.describe 'Users API update', type: :request do
         expect(json_body['errors']).to include('resource')
       end
 
-      it 'forbids non-admins to update role attribute' do
+      it 'ignores non-admin updates of role attribute' do
         put "/api/users/#{public_user.id}",
             params: { user: { role: 'admin' } }.to_json,
             headers: api_headers(token: public_user.token)
 
-        expect(response).to have_http_status(:forbidden)
-        expect(json_body['errors']).to include('resource')
+        expect(response).to have_http_status(:ok)
+        expect(json_body['user']['role']).not_to eq('admin')
       end
     end
 
