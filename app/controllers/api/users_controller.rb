@@ -36,9 +36,9 @@ module Api
 
     # PUT /api/users/:id(.:format)
     def update
-      user = User.find(params[:id])
+      user = User.update(params[:id], user_params)
 
-      if user.save
+      if user.valid?
         render json: user, status: :ok
       else
         render json: { errors: user.errors }, status: :bad_request

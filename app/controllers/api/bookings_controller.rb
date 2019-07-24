@@ -36,9 +36,9 @@ module Api
 
     # PUT /api/bookings/:id(.:format)
     def update
-      booking = Booking.find(params[:id])
+      booking = Booking.update(params[:id], booking_params)
 
-      if booking.save
+      if booking.valid?
         render json: booking, status: :ok
       else
         render json: { errors: booking.errors }, status: :bad_request
