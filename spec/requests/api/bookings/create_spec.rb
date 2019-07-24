@@ -1,12 +1,10 @@
 RSpec.describe 'Bookings API create', type: :request do
   include TestHelpers::JsonResponse
 
-  let(:users) { FactoryBot.create_list(:user, 2) }
+  let(:user) { FactoryBot.create(:user) }
   let(:flight) { FactoryBot.create(:flight) }
 
-  let(:valid_params) do
-    FactoryBot.attributes_for(:booking, user_id: users.first.id, flight_id: flight.id)
-  end
+  let(:valid_params) { FactoryBot.attributes_for(:booking, flight_id: flight.id) }
   let(:invalid_params) { FactoryBot.attributes_for(:booking, seat_price: '', no_of_seats: '') }
 
   describe 'POST /api/bookings(.:format)' do
@@ -28,7 +26,7 @@ RSpec.describe 'Bookings API create', type: :request do
         expect do
           post '/api/bookings',
                params: { booking: valid_params }.to_json,
-               headers: api_headers(token: users.first.token)
+               headers: api_headers(token: user.token)
         end.to change(Booking, :count).by(1)
 
         expect(response).to have_http_status(:created)
@@ -42,7 +40,7 @@ RSpec.describe 'Bookings API create', type: :request do
         expect do
           post '/api/bookings',
                params: { booking: invalid_params }.to_json,
-               headers: api_headers(token: users.first.token)
+               headers: api_headers(token: user.token)
         end.not_to change(Booking, :count)
 
         expect(response).to have_http_status(:bad_request)
