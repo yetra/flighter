@@ -14,7 +14,7 @@ module Api
 
     # POST /api/users(.:format)
     def create
-      user = User.new(user_params.except('role'))
+      user = User.new(user_params)
 
       if user.save
         render json: user, status: :created
@@ -62,9 +62,10 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(
-        :first_name, :last_name, :email, :password, :role, :created_at, :updated_at
-      )
+      permitted_params = [:first_name, :last_name, :email, :password, :created_at, :updated_at]
+      permitted_params.push(:role) if current_user.admin?
+
+      params.require(:user).permit(permitted_params)
     end
 
     def permitted?
