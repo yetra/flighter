@@ -14,7 +14,7 @@ module Api
 
     # POST /api/users(.:format)
     def create
-      user = User.new(user_params)
+      user = User.new(user_params.except('role'))
 
       if user.save
         render json: user, status: :created
@@ -37,11 +37,8 @@ module Api
     # PUT /api/users/:id(.:format)
     def update
       user = User.find(params[:id])
-      user.attributes = user_params
 
-      if user.role_changed? && !current_user.admin?
-        render_forbidden
-      elsif user.save
+      if user.save
         render json: user, status: :ok
       else
         render json: { errors: user.errors }, status: :bad_request
