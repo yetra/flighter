@@ -14,7 +14,7 @@ module Api
 
     # POST /api/bookings(.:format)
     def create
-      booking = Booking.new(booking_params)
+      booking = Booking.new(booking_params.reverse_merge(user_id: current_user.id))
 
       if booking.save
         render json: booking, status: :created
