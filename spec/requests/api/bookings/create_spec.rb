@@ -32,6 +32,7 @@ RSpec.describe 'Bookings API create', type: :request do
         expect(response).to have_http_status(:created)
         expect(json_body['booking']).to include('seat_price' => valid_params[:seat_price],
                                                 'no_of_seats' => valid_params[:no_of_seats])
+        expect(json_body['booking']['user']).to include('id' => user.id)
       end
     end
 
