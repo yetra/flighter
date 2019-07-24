@@ -60,7 +60,7 @@ module Api
 
     def user_params
       permitted_params = [:first_name, :last_name, :email, :password, :created_at, :updated_at]
-      permitted_params.push(:role) if current_user.admin?
+      permitted_params.push(:role) if current_user&.admin?
 
       params.require(:user).permit(permitted_params)
     end
