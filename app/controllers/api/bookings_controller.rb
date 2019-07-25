@@ -1,13 +1,20 @@
 module Api
   class BookingsController < ApplicationController
+    before_action :require_login
+    before_action :require_permission, only: [:show, :update, :destroy]
+
     # GET /api/bookings(.:format)
     def index
-      render json: Booking.all, status: :ok
+      if current_user.admin?
+        render json: Booking.all, status: :ok
+      else
+        render json: Booking.where(user: current_user), status: :ok
+      end
     end
 
     # POST /api/bookings(.:format)
     def create
-      booking = Booking.new(booking_params)
+      booking = Booking.new(booking_params.reverse_merge(user_id: current_user.id))
 
       if booking.save
         render json: booking, status: :created
@@ -52,9 +59,17 @@ module Api
     private
 
     def booking_params
-      params.require(:booking).permit(
-        :user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at
-      )
+      if current_user.admin?
+        params.require(:booking)
+              .permit(:user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+      else
+        params.require(:booking)
+              .permit(:flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+      end
+    end
+
+    def permitted?
+      Booking.find(params[:id]).user_id == current_user.id || super
     end
   end
 end

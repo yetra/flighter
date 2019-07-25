@@ -1,8 +1,15 @@
 module Api
   class UsersController < ApplicationController
+    before_action :require_login, except: [:create]
+    before_action :require_permission, only: [:show, :update, :destroy]
+
     # GET /api/users(.:format)
     def index
-      render json: User.all, status: :ok
+      if current_user.admin?
+        render json: User.all, status: :ok
+      else
+        render_forbidden
+      end
     end
 
     # POST /api/users(.:format)
@@ -52,7 +59,17 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :created_at, :updated_at)
+      if current_user&.admin?
+        params.require(:user)
+              .permit(:role, :first_name, :last_name, :email, :password, :created_at, :updated_at)
+      else
+        params.require(:user)
+              .permit(:first_name, :last_name, :email, :password, :created_at, :updated_at)
+      end
+    end
+
+    def permitted?
+      params[:id].to_i == current_user.id || super
     end
   end
 end

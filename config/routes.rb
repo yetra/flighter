@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     resources :flights, only: [:index, :show, :create, :update, :destroy]
 
     resources :bookings, only: [:index, :show, :create, :update, :destroy]
+
+    resource :session, only: [:create, :destroy]
   end
 end
