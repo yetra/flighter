@@ -10,6 +10,7 @@ module Api
                  else
                    Booking.where(user: current_user)
                  end
+      bookings = bookings.active if booking_params[:filter] == 'active'
 
       render json: bookings.includes(:flight).order('flight.flys_at, flight.name, created_at')
     end
@@ -63,10 +64,11 @@ module Api
     def booking_params
       if current_user.admin?
         params.require(:booking)
-              .permit(:user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at,
+                      :filter)
       else
         params.require(:booking)
-              .permit(:flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:flight_id, :seat_price, :no_of_seats, :created_at, :updated_at, :filter)
       end
     end
 
