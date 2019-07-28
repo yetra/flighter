@@ -8,7 +8,7 @@ module Api
       companies = Company.all
       companies = Company.with_active_flights if params[:filter] == 'active'
 
-      render json: companies.order(:name), status: :ok
+      render json: companies.includes(:flights).order(:name), status: :ok
     end
 
     # POST /api/companies(.:format)
