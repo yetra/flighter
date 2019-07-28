@@ -9,7 +9,7 @@ module Api
         users = User.all
         users = users.contains_query(params[:query]) if params[:query].present?
 
-        render json: users.order(:email), status: :ok
+        render json: users.includes(:bookings).order(:email), status: :ok
       else
         render_forbidden
       end
