@@ -5,7 +5,7 @@ module Api
 
     # GET /api/companies(.:format)
     def index
-      companies = if company_params[:filter] == 'active'
+      companies = if params[:filter] == 'active'
                     Company.with_active_flights
                   else
                     Company.all
@@ -61,7 +61,7 @@ module Api
     private
 
     def company_params
-      params.require(:company).permit(:name, :created_at, :updated_at, :filter)
+      params.require(:company).permit(:name, :created_at, :updated_at)
     end
   end
 end
