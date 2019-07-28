@@ -8,7 +8,7 @@ module Api
       bookings = current_user.admin? ? Booking.all : Booking.where(user: current_user)
       bookings = bookings.active if params[:filter] == 'active'
 
-      render json: bookings.includes(:flight)
+      render json: bookings.includes(:flight, :user)
                            .order('flights.flys_at, flights.name, bookings.created_at')
     end
 
