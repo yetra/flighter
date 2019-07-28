@@ -12,4 +12,7 @@ class Company < ApplicationRecord
   has_many :flights, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  scope :with_active_flights,
+        -> { joins(:flights).where('flights.flys_at > CURRENT_TIMESTAMP').group(:id) }
 end
