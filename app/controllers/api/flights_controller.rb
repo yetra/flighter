@@ -14,7 +14,8 @@ module Api
         flights = flights.no_of_available_seats_gteq(params[:no_of_available_seats_gteq])
       end
 
-      render json: flights.order(:flys_at, :name, :created_at), status: :ok
+      render json: flights.includes(:company, :bookings).order(:flys_at, :name, :created_at),
+             status: :ok
     end
 
     # rubocop:enable Metrics/AbcSize
