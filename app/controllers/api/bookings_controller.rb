@@ -5,11 +5,7 @@ module Api
 
     # GET /api/bookings(.:format)
     def index
-      bookings = if current_user.admin?
-                   Booking.all
-                 else
-                   Booking.where(user: current_user)
-                 end
+      bookings = current_user.admin? ? Booking.all : Booking.where(user: current_user)
       bookings = bookings.active if params[:filter] == 'active'
 
       render json: bookings.includes(:flight)
