@@ -19,11 +19,18 @@ class Booking < ApplicationRecord
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
   validate :flight_not_in_the_past
+  validate :flight_not_overbooked
 
   def flight_not_in_the_past
     return unless flight&.flys_at&.past?
 
     errors.add(:flight, "flight can't be in the past")
+  end
+
+  def flight_not_overbooked
+    return if flight && no_of_seats && (flight.booked_seats + no_of_seats <= flight.no_of_seats)
+
+    errors.add(:flight, "flight can't be overbooked")
   end
 
   scope :active, -> { joins(:flight).where('flight.flys_at > CURRENT_TIMESTAMP') }

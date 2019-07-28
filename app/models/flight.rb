@@ -31,4 +31,8 @@ class Flight < ApplicationRecord
 
     errors.add(:flys_at, 'must be before lands_at')
   end
+
+  def booked_seats
+    bookings.sum(&:no_of_seats)
+  end
 end
