@@ -5,7 +5,13 @@ module Api
 
     # GET /api/companies(.:format)
     def index
-      render json: Company.all.order(:name), status: :ok
+      companies = if company_params[:filter] == 'active'
+                    Company.with_active_flights
+                  else
+                    Company.all
+                  end
+
+      render json: companies.order(:name), status: :ok
     end
 
     # POST /api/companies(.:format)
@@ -55,7 +61,7 @@ module Api
     private
 
     def company_params
-      params.require(:company).permit(:name, :created_at, :updated_at)
+      params.require(:company).permit(:name, :created_at, :updated_at, :filter)
     end
   end
 end
