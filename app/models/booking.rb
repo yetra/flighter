@@ -25,4 +25,6 @@ class Booking < ApplicationRecord
 
     errors.add(:flight, "flight can't be in the past")
   end
+
+  scope :active, -> { joins(:flight).where('flight.flys_at > CURRENT_TIMESTAMP') }
 end
