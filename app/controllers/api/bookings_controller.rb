@@ -12,7 +12,8 @@ module Api
                  end
       bookings = bookings.active if params[:filter] == 'active'
 
-      render json: bookings.includes(:flight).order('flight.flys_at, flight.name, created_at')
+      render json: bookings.includes(:flight)
+                           .order('flights.flys_at, flights.name, bookings.created_at')
     end
 
     # POST /api/bookings(.:format)
