@@ -3,7 +3,9 @@ class FlightSerializer < ActiveModel::Serializer
   has_many :bookings
 
   attribute :id
+
   attribute :name
+  attribute :company_name
 
   attribute :no_of_seats
   attribute :no_of_booked_seats
@@ -15,6 +17,10 @@ class FlightSerializer < ActiveModel::Serializer
 
   attribute :created_at
   attribute :updated_at
+
+  def company_name
+    object.company.name
+  end
 
   def no_of_booked_seats
     object.booked_seats
