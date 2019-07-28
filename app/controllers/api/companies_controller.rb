@@ -5,7 +5,7 @@ module Api
 
     # GET /api/companies(.:format)
     def index
-      render json: Company.all, status: :ok
+      render json: Company.all.order(:name), status: :ok
     end
 
     # POST /api/companies(.:format)
