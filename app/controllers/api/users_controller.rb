@@ -6,7 +6,7 @@ module Api
     # GET /api/users(.:format)
     def index
       if current_user.admin?
-        render json: User.all, status: :ok
+        render json: User.all.order(:email), status: :ok
       else
         render_forbidden
       end
