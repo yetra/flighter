@@ -5,11 +5,8 @@ module Api
 
     # GET /api/companies(.:format)
     def index
-      companies = if params[:filter] == 'active'
-                    Company.with_active_flights
-                  else
-                    Company.all
-                  end
+      companies = Company.all
+      companies = Company.with_active_flights if params[:filter] == 'active'
 
       render json: companies.order(:name), status: :ok
     end
