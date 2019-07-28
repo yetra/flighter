@@ -5,7 +5,7 @@ module Api
 
     # GET /api/flights(.:format)
     def index
-      render json: Flight.all.order(:flys_at, :name, :created_at), status: :ok
+      render json: Flight.active.order(:flys_at, :name, :created_at), status: :ok
     end
 
     # POST /api/flights(.:format)
