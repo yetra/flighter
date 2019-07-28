@@ -5,11 +5,13 @@ module Api
 
     # GET /api/bookings(.:format)
     def index
-      if current_user.admin?
-        render json: Booking.all, status: :ok
-      else
-        render json: Booking.where(user: current_user), status: :ok
-      end
+      bookings = if current_user.admin?
+                   Booking.all
+                 else
+                   Booking.where(user: current_user)
+                 end
+
+      render json: bookings.includes(:flight).order('flight.flys_at, flight.name, created_at')
     end
 
     # POST /api/bookings(.:format)
