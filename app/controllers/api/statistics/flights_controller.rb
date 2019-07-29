@@ -6,7 +6,7 @@ module Api
 
       def index
         render json: Flight.all,
-               each_serializer: Statistics::FlightSerializer,
+               each_serializer: ::Statistics::FlightSerializer,
                status: :ok
       end
     end

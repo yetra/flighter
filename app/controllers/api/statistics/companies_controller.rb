@@ -6,7 +6,7 @@ module Api
 
       def index
         render json: Company.all,
-               each_serializer: Statistics::CompanySerializer,
+               each_serializer: ::Statistics::CompanySerializer,
                status: :ok
       end
     end
