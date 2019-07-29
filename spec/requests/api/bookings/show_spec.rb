@@ -34,7 +34,8 @@ RSpec.describe 'Bookings API show', type: :request do
             headers: api_headers(token: admin_user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['booking']).to include('id', 'user', 'flight', 'created_at', 'updated_at')
+        expect(json_body['booking']).to include('id', 'user', 'flight', 'total_price',
+                                                'created_at', 'updated_at')
         expect(json_body['booking']).to include('seat_price' => booking.seat_price,
                                                 'no_of_seats' => booking.no_of_seats)
       end
@@ -44,7 +45,8 @@ RSpec.describe 'Bookings API show', type: :request do
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['booking']).to include('id', 'user', 'flight', 'created_at', 'updated_at')
+        expect(json_body['booking']).to include('id', 'user', 'flight', 'total_price',
+                                                'created_at', 'updated_at')
         expect(json_body['booking']).to include('seat_price' => public_user_booking.seat_price,
                                                 'no_of_seats' => public_user_booking.no_of_seats)
       end
