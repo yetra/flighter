@@ -5,9 +5,7 @@ module Api
       before_action :require_permission
 
       def index
-        render json: Company.all,
-               each_serializer: ::Statistics::CompanySerializer,
-               status: :ok
+        render json: Company.all, status: :ok
       end
     end
   end

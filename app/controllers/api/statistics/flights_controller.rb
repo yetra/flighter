@@ -5,9 +5,7 @@ module Api
       before_action :require_permission
 
       def index
-        render json: Flight.all,
-               each_serializer: ::Statistics::FlightSerializer,
-               status: :ok
+        render json: Flight.all, status: :ok
       end
     end
   end
