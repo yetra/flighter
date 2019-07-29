@@ -24,8 +24,6 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true, length: { minimum: 2 }
 
-  validates :role, inclusion: %w[admin], allow_nil: true
-
   scope :contains_query, lambda { |query|
     where('email ILIKE :q OR first_name ILIKE :q OR last_name ILIKE :q', q: "%#{query}%")
   }
