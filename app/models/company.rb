@@ -13,5 +13,5 @@ class Company < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
-  scope :with_active_flights, -> { joins(:flights).merge(Flight.active).group(:id) }
+  scope :with_active_flights, -> { joins(:flights).merge(Flight.active).distinct }
 end
