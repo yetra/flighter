@@ -15,7 +15,7 @@ module Statistics
     end
 
     def average_price_of_seats
-      total_revenue / total_no_of_booked_seats
+      object.flights.sum(&:base_price) / object.flights.count.to_f
     end
   end
 end
