@@ -5,7 +5,7 @@ module Api
       before_action :require_permission
 
       def index
-        render json: Company.all, status: :ok
+        render json: CompaniesQuery.new.with_stats, status: :ok
       end
     end
   end
