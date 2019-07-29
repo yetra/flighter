@@ -26,18 +26,4 @@ class FlightSerializer < ActiveModel::Serializer
   def no_of_booked_seats
     object.booked_seats
   end
-
-  def current_price
-    return object.base_price if DateTime.now >= object.flys_at - 15.days
-
-    last_minute_price
-  end
-
-  private
-
-  def last_minute_price
-    diff_in_days = (object.flys_at.to_datetime - DateTime.now).to_i
-
-    ((2 - diff_in_days / 15) * object.base_price).round
-  end
 end

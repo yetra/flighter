@@ -34,7 +34,7 @@ class Flight < ApplicationRecord
   scope :flys_at_eq, ->(timestamp) { where('flys_at = ?', timestamp) }
   scope :no_of_available_seats_gteq, lambda { |seats|
     joins(:bookings).having('flights.no_of_seats - SUM(bookings.no_of_seats) >= ?', seats)
-                    .group(:id)
+                    .group('flights.id')
   }
 
   scope :overlapping, lambda { |flight|
@@ -47,7 +47,19 @@ class Flight < ApplicationRecord
     bookings.sum(&:no_of_seats)
   end
 
+  def current_price
+    return base_price if DateTime.now >= flys_at - 15.days
+
+    last_minute_price
+  end
+
   private
+
+  def last_minute_price
+    diff_in_days = (flys_at.to_datetime - DateTime.now).to_i
+
+    ((2 - diff_in_days / 15) * base_price).round
+  end
 
   def flys_before_lands
     return unless flys_at && lands_at && flys_at >= lands_at
