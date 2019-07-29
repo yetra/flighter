@@ -33,8 +33,8 @@ class Flight < ApplicationRecord
   scope :name_cont, ->(string) { where('name ILIKE ?', "%#{string}%") }
   scope :flys_at_eq, ->(timestamp) { where('flys_at = ?', timestamp) }
   scope :no_of_available_seats_gteq, lambda { |seats|
-    joins(:bookings).having('flights.no_of_seats - SUM(bookings.no_of_seats) >= ?', seats)
-                    .group('flights.id')
+    where(id: Flight.joins(:bookings).group(:id)
+                    .having('flights.no_of_seats - SUM(bookings.no_of_seats) >= ?', seats))
   }
 
   scope :overlapping, lambda { |flight|
