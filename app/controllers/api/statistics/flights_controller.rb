@@ -5,7 +5,7 @@ module Api
       before_action :require_permission
 
       def index
-        render json: Flight.all, status: :ok
+        render json: FlightsQuery.new.with_stats, status: :ok
       end
     end
   end

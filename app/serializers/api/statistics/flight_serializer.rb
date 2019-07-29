@@ -1,23 +1,13 @@
 module Api
   module Statistics
     class FlightSerializer < ActiveModel::Serializer
-      attributes :flight_id, :revenue, :no_of_booked_seats, :occupancy
+      attribute :flight_id
 
-      def flight_id
-        object.id
-      end
+      attribute :revenue
 
-      def revenue
-        object.booked_seats * object.base_price
-      end
+      attribute :no_of_booked_seats
 
-      def no_of_booked_seats
-        object.booked_seats
-      end
-
-      def occupancy
-        no_of_booked_seats / object.no_of_seats.to_f
-      end
+      attribute :occupancy
     end
   end
 end
