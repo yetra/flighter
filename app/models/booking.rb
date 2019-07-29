@@ -21,6 +21,8 @@ class Booking < ApplicationRecord
   validate :flight_not_in_the_past
   validate :flight_not_overbooked
 
+  scope :active, -> { joins(:flight).merge(Flight.active) }
+
   def flight_not_in_the_past
     return unless flight&.flys_at&.past?
 
@@ -32,6 +34,4 @@ class Booking < ApplicationRecord
 
     errors.add(:flight, "flight can't be overbooked")
   end
-
-  scope :active, -> { joins(:flight).where('flight.flys_at > CURRENT_TIMESTAMP') }
 end
