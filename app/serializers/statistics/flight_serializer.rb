@@ -15,7 +15,7 @@ module Statistics
     end
 
     def occupancy
-      no_of_booked_seats / object.no_of_seats
+      no_of_booked_seats / object.no_of_seats.to_f
     end
   end
 end
