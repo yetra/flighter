@@ -7,7 +7,7 @@ module Statistics
     end
 
     def revenue
-      object.booked_seats * object.current_price
+      object.booked_seats * object.base_price
     end
 
     def no_of_booked_seats

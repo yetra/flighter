@@ -7,7 +7,7 @@ module Statistics
     end
 
     def total_revenue
-      object.flights.sum { |flight| flight.booked_seats * flight.current_price }
+      object.flights.sum { |flight| flight.booked_seats * flight.base_price }
     end
 
     def total_no_of_booked_seats
