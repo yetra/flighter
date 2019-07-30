@@ -15,7 +15,7 @@ module Api
 
     # POST /api/bookings(.:format)
     def create
-      booking = Booking.new(booking_params.reverse_merge(user_id: current_user.id))
+      booking = Booking.new(booking_params_with_price.reverse_merge(user_id: current_user.id))
 
       if booking.save
         render json: booking, status: :created
@@ -37,7 +37,7 @@ module Api
 
     # PUT /api/bookings/:id(.:format)
     def update
-      booking = Booking.update(params[:id], booking_params)
+      booking = Booking.update(params[:id], booking_params_with_price)
 
       if booking.valid?
         render json: booking, status: :ok
@@ -62,11 +62,17 @@ module Api
     def booking_params
       if current_user.admin?
         params.require(:booking)
-              .permit(:user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:user_id, :flight_id, :no_of_seats, :created_at, :updated_at)
       else
         params.require(:booking)
-              .permit(:flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:flight_id, :no_of_seats, :created_at, :updated_at)
       end
+    end
+
+    def booking_params_with_price
+      flight = Flight.find(booking_params[:flight_id]) if booking_params[:flight_id].present?
+
+      booking_params.merge(seat_price: flight&.current_price || 1)
     end
 
     def permitted?
