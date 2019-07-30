@@ -38,7 +38,7 @@ class Flight < ApplicationRecord
   }
 
   scope :overlapping, lambda { |flight|
-    where('(flys_at <= ?) AND (lands_at >= ?)', flight.flys_at, flight.lands_at)
+    where('(flys_at <= ?) AND (lands_at >= ?)', flight.lands_at, flight.flys_at)
       .where('company_id = ?', flight.company_id)
       .where('id != ?', flight.id)
   }
