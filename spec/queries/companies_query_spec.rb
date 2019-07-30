@@ -4,8 +4,15 @@ RSpec.describe CompaniesQuery do
   let!(:companies) { described_class.new.with_stats }
 
   before do
-    FactoryBot.create_list(:flight_with_bookings, 3, company_id: company_bots.first.id)
-    FactoryBot.create_list(:flight_with_bookings, 3, company_id: company_bots.second.id)
+    FactoryBot.create(:flight_with_bookings, company_id: company_bots.first.id)
+    FactoryBot.create(:flight_with_bookings, flys_at: DateTime.parse('2020-01-01T20:30:00.000Z'),
+                                             lands_at: DateTime.parse('2020-01-01T23:30:00.000Z'),
+                                             company_id: company_bots.first.id)
+
+    FactoryBot.create(:flight_with_bookings, company_id: company_bots.second.id)
+    FactoryBot.create(:flight_with_bookings, flys_at: DateTime.parse('2020-01-01T20:30:00.000Z'),
+                                             lands_at: DateTime.parse('2020-01-01T23:30:00.000Z'),
+                                             company_id: company_bots.second.id)
   end
 
   it 'lists all companies from database' do
@@ -17,11 +24,11 @@ RSpec.describe CompaniesQuery do
   end
 
   it 'lists companies containing correct total_revenue' do
-    expect(companies.first.total_revenue).to eq(3 * 45_000)
+    expect(companies.first.total_revenue).to eq(2 * 45_000)
   end
 
   it 'lists companies containing correct total_no_of_booked_seats' do
-    expect(companies.first.total_no_of_booked_seats).to eq(3 * 150)
+    expect(companies.first.total_no_of_booked_seats).to eq(2 * 150)
   end
 
   it 'lists companies containing correct average_price_of_seats' do

@@ -1,7 +1,7 @@
 RSpec.describe 'Companies Statistics API index', type: :request do
   include TestHelpers::JsonResponse
 
-  before { FactoryBot.create_list(:company_with_flights, 3) }
+  before { FactoryBot.create_list(:company, 3) }
 
   let(:public_user) { FactoryBot.create(:user) }
   let(:admin_user) { FactoryBot.create(:user, admin: true) }

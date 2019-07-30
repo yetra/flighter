@@ -26,7 +26,8 @@ RSpec.describe Flight do
     it { is_expected.to validate_numericality_of(:no_of_seats).is_greater_than(0) }
 
     it "doesn't overlap flights from the same company" do
-      expect(described_class.overlapping(flight_subject)).to be_empty
+      expect(described_class.overlapping_flys_at(flight_subject)).to be_empty
+      expect(described_class.overlapping_lands_at(flight_subject)).to be_empty
     end
   end
 end

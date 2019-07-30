@@ -37,10 +37,13 @@ class Flight < ApplicationRecord
                     .having('flights.no_of_seats - SUM(bookings.no_of_seats) >= ?', seats))
   }
 
-  scope :overlapping, lambda { |flight|
-    where('(flys_at <= ?) AND (lands_at >= ?)', flight.lands_at, flight.flys_at)
+  scope :overlapping_flys_at, lambda { |flight|
+    where('(lands_at >= :time) AND (flys_at < :time)', time: flight.flys_at)
       .where('company_id = ?', flight.company_id)
-      .where('id != ?', flight.id)
+  }
+  scope :overlapping_lands_at, lambda { |flight|
+    where('(flys_at <= :time) AND (lands_at > :time)', time: flight.lands_at)
+      .where('company_id = ?', flight.company_id)
   }
 
   def booked_seats
@@ -67,13 +70,16 @@ class Flight < ApplicationRecord
     errors.add(:flys_at, 'must be before lands_at')
   end
 
-  def overlapping?
-    self.class.overlapping(self).any?
+  def overlapping_flys_at?
+    self.class.overlapping_flys_at(self).any?
+  end
+
+  def overlapping_lands_at?
+    self.class.overlapping_lands_at(self).any?
   end
 
   def overlapping_flights
-    return unless overlapping?
-
-    errors.add(:flys_at, "flights can't overlap within the same company")
+    errors.add(:flys_at, "can't overlap within the same company") if overlapping_flys_at?
+    errors.add(:lands_at, "can't overlap within the same company") if overlapping_lands_at?
   end
 end
