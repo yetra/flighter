@@ -24,7 +24,7 @@ RSpec.describe CompaniesQuery do
   end
 
   it 'lists companies containing correct total_revenue' do
-    expect(companies.first.total_revenue).to eq(2 * 45_000)
+    expect(companies.first.total_revenue).to eq(120_000 + 60_000)
   end
 
   it 'lists companies containing correct total_no_of_booked_seats' do
@@ -32,6 +32,6 @@ RSpec.describe CompaniesQuery do
   end
 
   it 'lists companies containing correct average_price_of_seats' do
-    expect(companies.first.average_price_of_seats).to eq(300)
+    expect(companies.first.average_price_of_seats).to eq((800 + 400) / 2.0)
   end
 end

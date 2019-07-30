@@ -12,7 +12,7 @@ RSpec.describe FlightsQuery do
   end
 
   it 'lists flights containing correct revenue' do
-    expect(flights.first.revenue).to eq(45_000)
+    expect(flights.first.revenue).to eq(3 * 800 * 50)
   end
 
   it 'lists flights containing correct no_of_booked_seats' do

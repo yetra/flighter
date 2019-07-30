@@ -5,7 +5,9 @@ RSpec.describe 'Bookings API create', type: :request do
   let(:flight) { FactoryBot.create(:flight) }
 
   let(:valid_params) { FactoryBot.attributes_for(:booking, flight_id: flight.id) }
-  let(:invalid_params) { FactoryBot.attributes_for(:booking, seat_price: '', no_of_seats: '') }
+  let(:invalid_params) do
+    FactoryBot.attributes_for(:booking, no_of_seats: '', flight_id: flight.id)
+  end
 
   describe 'POST /api/bookings(.:format)' do
     context 'when unauthenticated' do
