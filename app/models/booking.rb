@@ -32,7 +32,8 @@ class Booking < ApplicationRecord
   end
 
   def flight_not_overbooked
-    return if flight && no_of_seats && (booked_seats + no_of_seats <= flight.no_of_seats)
+    return if flight.blank? || no_of_seats.blank?
+    return if booked_seats + no_of_seats <= flight.no_of_seats
 
     errors.add(:flight, "can't be overbooked")
   end
@@ -44,6 +45,8 @@ class Booking < ApplicationRecord
   private
 
   def set_seat_price
+    return if flight.blank?
+
     self.seat_price = flight.current_price
   end
 end
