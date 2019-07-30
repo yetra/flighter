@@ -41,11 +41,11 @@ RSpec.describe 'Flights API index', type: :request do
     end
 
     it 'supports filtering by number of available seats' do
-      get '/api/flights?no_of_available_seats_gteq=50',
+      get '/api/flights?no_of_available_seats_gteq=51',
           headers: api_headers
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['flights'].count).to eq(1)
+      expect(json_body['flights'].count).to eq(5)
     end
   end
 end
