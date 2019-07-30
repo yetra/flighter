@@ -14,7 +14,11 @@ module Api
       end
 
       attribute :occupancy do
-        number_to_percentage(object[:occupancy] * 100, precision: 2) || '0.0%'
+        if object[:occupancy].nil?
+          '0.0%'
+        else
+          number_to_percentage(object[:occupancy] * 100, precision: 2)
+        end
       end
     end
   end

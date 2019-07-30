@@ -14,7 +14,11 @@ module Api
       end
 
       attribute :average_price_of_seats do
-        number_to_percentage(object[:total_no_of_booked_seats] * 100, precision: 2) || '0.0%'
+        if object[:total_no_of_booked_seats].nil?
+          '0.0%'
+        else
+          number_to_percentage(object[:total_no_of_booked_seats] * 100, precision: 2)
+        end
       end
     end
   end
