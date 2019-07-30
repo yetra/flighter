@@ -26,12 +26,12 @@ class Booking < ApplicationRecord
   def flight_not_in_the_past
     return unless flight&.flys_at&.past?
 
-    errors.add(:flight, "flight can't be in the past")
+    errors.add(:flight, "can't be in the past")
   end
 
   def flight_not_overbooked
     return if flight && no_of_seats && (flight.booked_seats + no_of_seats <= flight.no_of_seats)
 
-    errors.add(:flight, "flight can't be overbooked")
+    errors.add(:flight, "can't be overbooked")
   end
 end
