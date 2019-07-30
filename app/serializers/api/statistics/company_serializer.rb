@@ -14,7 +14,7 @@ module Api
       end
 
       attribute :average_price_of_seats do
-        object[:average_price_of_seats] || 0.0
+        object[:average_price_of_seats].to_f || 0.0
       end
     end
   end
