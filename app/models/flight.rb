@@ -48,7 +48,7 @@ class Flight < ApplicationRecord
   end
 
   def current_price
-    return base_price if DateTime.now >= flys_at - 15.days
+    return base_price unless flys_at - DateTime.now <= 15.days
 
     last_minute_price
   end
@@ -58,7 +58,7 @@ class Flight < ApplicationRecord
   def last_minute_price
     diff_in_days = (flys_at.to_datetime - DateTime.now).to_i
 
-    ((2 - diff_in_days / 15) * base_price).round
+    ((2 - diff_in_days / 15.0) * base_price).round
   end
 
   def flys_before_lands
