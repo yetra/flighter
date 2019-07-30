@@ -72,7 +72,11 @@ module Api
     def booking_params_with_price
       flight = Flight.find(booking_params[:flight_id]) if booking_params[:flight_id].present?
 
-      booking_params.merge(seat_price: flight&.current_price || 1)
+      if flight
+        booking_params.merge(seat_price: flight&.current_price)
+      else
+        booking_params
+      end
     end
 
     def permitted?
