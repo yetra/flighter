@@ -37,7 +37,7 @@ module Api
 
     # PUT /api/bookings/:id(.:format)
     def update
-      booking = Booking.update(params[:id], booking_params.except(:flight_id))
+      booking = Booking.update(params[:id], booking_params)
 
       if booking.valid?
         render json: booking, status: :ok
