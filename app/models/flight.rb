@@ -56,7 +56,7 @@ class Flight < ApplicationRecord
   private
 
   def last_minute_price
-    diff_in_days = (flys_at.to_datetime - DateTime.now).to_i
+    diff_in_days = [(flys_at.to_datetime - DateTime.now).to_i, 0].max
 
     ((2 - diff_in_days / 15.0) * base_price).round
   end
