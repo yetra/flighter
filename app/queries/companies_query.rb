@@ -9,8 +9,8 @@ class CompaniesQuery
     relation.select('companies.id as company_id')
             .select('SUM(bookings.no_of_seats * bookings.seat_price) AS total_revenue')
             .select('SUM(bookings.no_of_seats) AS total_no_of_booked_seats')
-            .select('SUM(bookings.no_of_seats * bookings.seat_price) / SUM(bookings.no_of_seats)
-                     AS average_price_of_seats')
+            .select('1.0 * SUM(bookings.no_of_seats * bookings.seat_price) /
+                     SUM(bookings.no_of_seats) AS average_price_of_seats')
             .left_joins(flights: :bookings)
             .group(:id)
   end
