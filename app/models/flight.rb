@@ -64,7 +64,7 @@ class Flight < ApplicationRecord
   end
 
   def overlapping_flights
-    return if company.blank? || company.flights.blank? || overlapping.empty?
+    return if company.blank? || overlapping.empty?
 
     errors.add(:flys_at, "can't overlap within the same company")
     errors.add(:lands_at, "can't overlap within the same company")
