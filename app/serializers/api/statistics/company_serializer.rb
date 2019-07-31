@@ -1,8 +1,6 @@
 module Api
   module Statistics
     class CompanySerializer < ActiveModel::Serializer
-      include ActionView::Helpers::NumberHelper
-
       attribute :company_id
 
       attribute :total_revenue do
