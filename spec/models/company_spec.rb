@@ -1,6 +1,6 @@
 RSpec.describe Company do
   describe 'associations' do
-    subject { FactoryBot.create(:company_with_flights) }
+    subject { FactoryBot.create(:company) }
 
     it { is_expected.to have_many(:flights) }
   end

@@ -11,7 +11,7 @@ RSpec.describe 'Bookings API update', type: :request do
     context 'when unauthenticated' do
       it 'returns 401 Unauthorized' do
         put "/api/bookings/#{booking.id}",
-            params: { booking: { seat_price: 700 } }.to_json,
+            params: { booking: { no_of_seats: 30 } }.to_json,
             headers: api_headers
 
         expect(response).to have_http_status(:unauthorized)
@@ -22,7 +22,7 @@ RSpec.describe 'Bookings API update', type: :request do
     context 'when unauthorized' do
       it "forbids non-admins to update others' resources" do
         put "/api/bookings/#{booking.id}",
-            params: { booking: { seat_price: 700 } }.to_json,
+            params: { booking: { no_of_seats: 30 } }.to_json,
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:forbidden)
@@ -42,12 +42,12 @@ RSpec.describe 'Bookings API update', type: :request do
     context 'when authorized with valid params' do
       it 'allows admins to update any resources' do
         put "/api/bookings/#{booking.id}",
-            params: { booking: { seat_price: 700 } }.to_json,
+            params: { booking: { no_of_seats: 30 } }.to_json,
             headers: api_headers(token: admin_user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['booking']).to include('seat_price' => 700)
-        expect(booking.reload.seat_price).to eq(700)
+        expect(json_body['booking']).to include('no_of_seats' => 30)
+        expect(booking.reload.no_of_seats).to eq(30)
       end
 
       it 'allows admins to update user_id attribute' do
@@ -62,23 +62,23 @@ RSpec.describe 'Bookings API update', type: :request do
 
       it 'allows non-admins to update their resources' do
         put "/api/bookings/#{public_user_booking.id}",
-            params: { booking: { seat_price: 700 } }.to_json,
+            params: { booking: { no_of_seats: 30 } }.to_json,
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['booking']).to include('seat_price' => 700)
-        expect(public_user_booking.reload.seat_price).to eq(700)
+        expect(json_body['booking']).to include('no_of_seats' => 30)
+        expect(public_user_booking.reload.no_of_seats).to eq(30)
       end
     end
 
     context 'when authorized with invalid params' do
       it 'returns 400 Bad Request' do
         put "/api/bookings/#{public_user_booking.id}",
-            params: { booking: { seat_price: '' } }.to_json,
+            params: { booking: { no_of_seats: '' } }.to_json,
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:bad_request)
-        expect(json_body['errors']).to include('seat_price')
+        expect(json_body['errors']).to include('no_of_seats')
       end
     end
   end

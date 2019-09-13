@@ -9,7 +9,8 @@ RSpec.describe 'Companies API show', type: :request do
           headers: api_headers
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['company']).to include('id', 'flights', 'created_at', 'updated_at')
+      expect(json_body['company']).to include('id', 'flights', 'no_of_active_flights',
+                                              'created_at', 'updated_at')
       expect(json_body['company']).to include('name' => companies.first.name)
     end
   end

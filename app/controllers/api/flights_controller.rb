@@ -3,11 +3,22 @@ module Api
     before_action :require_login, only: [:create, :update, :destroy]
     before_action :require_permission, only: [:create, :update, :destroy]
 
+    # rubocop:disable Metrics/AbcSize
     # GET /api/flights(.:format)
     def index
-      render json: Flight.all, status: :ok
+      flights = Flight.active
+      flights = flights.name_cont(params[:name_cont]) if params[:name_cont].present?
+      flights = flights.flys_at_eq(params[:flys_at_eq]) if params[:flys_at_eq].present?
+
+      if params[:no_of_available_seats_gteq].present?
+        flights = flights.no_of_available_seats_gteq(params[:no_of_available_seats_gteq])
+      end
+
+      render json: flights.includes(:company, :bookings).order(:flys_at, :name, :created_at),
+             status: :ok
     end
 
+    # rubocop:enable Metrics/AbcSize
     # POST /api/flights(.:format)
     def create
       flight = Flight.new(flight_params)

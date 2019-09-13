@@ -6,7 +6,10 @@ module Api
     # GET /api/users(.:format)
     def index
       if current_user.admin?
-        render json: User.all, status: :ok
+        users = User.all
+        users = users.contains_query(params[:query]) if params[:query].present?
+
+        render json: users.includes(:bookings).order(:email), status: :ok
       else
         render_forbidden
       end

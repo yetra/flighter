@@ -5,7 +5,9 @@ RSpec.describe 'Bookings API create', type: :request do
   let(:flight) { FactoryBot.create(:flight) }
 
   let(:valid_params) { FactoryBot.attributes_for(:booking, flight_id: flight.id) }
-  let(:invalid_params) { FactoryBot.attributes_for(:booking, seat_price: '', no_of_seats: '') }
+  let(:invalid_params) do
+    FactoryBot.attributes_for(:booking, no_of_seats: '', flight_id: flight.id)
+  end
 
   describe 'POST /api/bookings(.:format)' do
     context 'when unauthenticated' do
@@ -30,7 +32,7 @@ RSpec.describe 'Bookings API create', type: :request do
         end.to change(Booking, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        expect(json_body['booking']).to include('seat_price' => valid_params[:seat_price],
+        expect(json_body['booking']).to include('seat_price' => flight.current_price,
                                                 'no_of_seats' => valid_params[:no_of_seats])
         expect(json_body['booking']['user']).to include('id' => user.id)
       end
@@ -45,7 +47,7 @@ RSpec.describe 'Bookings API create', type: :request do
         end.not_to change(Booking, :count)
 
         expect(response).to have_http_status(:bad_request)
-        expect(json_body['errors']).to include('seat_price', 'no_of_seats')
+        expect(json_body['errors']).to include('no_of_seats')
       end
     end
   end

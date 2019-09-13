@@ -18,5 +18,9 @@ RSpec.describe Booking do
     it 'does not have flight in the past' do
       expect(booking_subject.flight.flys_at).to be >= DateTime.now
     end
+
+    it 'does not overbook flights' do
+      expect(booking_subject.flight.booked_seats).to be <= booking_subject.flight.no_of_seats
+    end
   end
 end

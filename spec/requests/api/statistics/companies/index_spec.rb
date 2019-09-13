@@ -1,18 +1,15 @@
-RSpec.describe 'Users API index', type: :request do
+RSpec.describe 'Companies Statistics API index', type: :request do
   include TestHelpers::JsonResponse
 
-  before do
-    FactoryBot.create_list(:user, 3)
-    FactoryBot.create(:user, last_name: 'TestName')
-  end
+  before { FactoryBot.create_list(:company, 3) }
 
   let(:public_user) { FactoryBot.create(:user) }
   let(:admin_user) { FactoryBot.create(:user, admin: true) }
 
-  describe 'GET /api/users(.:format)' do
+  describe 'GET /api/statistics/companies(.:format)' do
     context 'when unauthenticated' do
       it 'returns 401 Unauthorized' do
-        get '/api/users',
+        get '/api/statistics/companies',
             headers: api_headers
 
         expect(response).to have_http_status(:unauthorized)
@@ -21,8 +18,8 @@ RSpec.describe 'Users API index', type: :request do
     end
 
     context 'when unauthorized' do
-      it 'forbids non-admins to list user resources' do
-        get '/api/users',
+      it 'forbids non-admins to list company statistics' do
+        get '/api/statistics/companies',
             headers: api_headers(token: public_user.token)
 
         expect(response).to have_http_status(:forbidden)
@@ -31,21 +28,15 @@ RSpec.describe 'Users API index', type: :request do
     end
 
     context 'when authorized' do
-      it 'allows admins to list user resources' do
-        get '/api/users',
+      it 'allows admins to list company statistics' do
+        get '/api/statistics/companies',
             headers: api_headers(token: admin_user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['users'].count).to eq(5)
-      end
-
-      it 'supports filtering by email, first_name or last_name' do
-        get '/api/users?query=test',
-            headers: api_headers(token: admin_user.token)
-
-        expect(response).to have_http_status(:ok)
-        expect(json_body['users'].count).to eq(1)
-        expect(json_body['users'].first).to include('last_name' => 'TestName')
+        expect(json_body['companies'].count).to eq(3)
+        expect(json_body['companies'].first).to include('company_id', 'total_revenue',
+                                                        'total_no_of_booked_seats',
+                                                        'average_price_of_seats')
       end
     end
   end

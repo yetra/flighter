@@ -5,11 +5,12 @@ module Api
 
     # GET /api/bookings(.:format)
     def index
-      if current_user.admin?
-        render json: Booking.all, status: :ok
-      else
-        render json: Booking.where(user: current_user), status: :ok
-      end
+      bookings = current_user.admin? ? Booking.all : Booking.where(user: current_user)
+      bookings = bookings.active if params[:filter] == 'active'
+
+      render json: bookings.includes(:flight, :user)
+                           .order('flights.flys_at, flights.name, bookings.created_at'),
+             status: :ok
     end
 
     # POST /api/bookings(.:format)
@@ -61,10 +62,10 @@ module Api
     def booking_params
       if current_user.admin?
         params.require(:booking)
-              .permit(:user_id, :flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:user_id, :flight_id, :no_of_seats, :created_at, :updated_at)
       else
         params.require(:booking)
-              .permit(:flight_id, :seat_price, :no_of_seats, :created_at, :updated_at)
+              .permit(:flight_id, :no_of_seats, :created_at, :updated_at)
       end
     end
 

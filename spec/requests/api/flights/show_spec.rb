@@ -10,6 +10,7 @@ RSpec.describe 'Flights API show', type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(json_body['flight']).to include('id', 'flys_at', 'lands_at', 'bookings',
+                                             'no_of_booked_seats', 'company_name', 'current_price',
                                              'company', 'created_at', 'updated_at')
       expect(json_body['flight']).to include('name' => flights.first.name,
                                              'base_price' => flights.first.base_price,
