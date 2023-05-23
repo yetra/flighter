@@ -1,2 +1,3 @@
-# Application
-https://obscure-mountain-30810.herokuapp.com/
+# Flighter
+
+Infinum Academy Backend course 2019 project
